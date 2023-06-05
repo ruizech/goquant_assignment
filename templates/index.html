@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Crypto Data</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            function updateCryptoData() {
+                $.ajax({
+                    url: '/crypto_data',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#symbol').text(data.symbol);
+                        $('#close_price').text(data.close_price);
+                        $('#volume').text(data.volume);
+                        $('#price_change').text(data.price_change);
+                        $('#volatility').text(data.volatility);
+                        $('#market_cap').text(data.market_cap);
+                        $('#plot_image').attr('src', 'data:image/png;base64,' + data.plot_image);
+                    },
+                    error: function(xhr, status, error) {
+                        console.log('Error:', error);
+                    }
+                });
+            }
+
+            updateCryptoData();
+
+            // Update data every second
+            setInterval(updateCryptoData, 1000);
+        });
+    </script>
+</head>
+<body>
+    <h1>Crypto Data</h1>
+    <h2 id="symbol"></h2>
+    <p>Close Price: <span id="close_price"></span></p>
+    <p>24h Volume: <span id="volume"></span></p>
+    <p>24h Price Change: <span id="price_change"></span></p>
+    <p>24h Volatility: <span id="volatility"></span></p>
+    <p>Market Cap: <span id="market_cap"></span></p>
+    <img id="plot_image" alt="Price History">
+</body>
+</html>
+
